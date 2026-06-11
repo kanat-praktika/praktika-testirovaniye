@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal - Информационная Система</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #0b0f19;
+            --bg-secondary: #161b2c;
+            --bg-tertiary: rgba(30, 41, 59, 0.7);
+            --accent-primary: #6366f1;
+            --accent-secondary: #a855f7;
+            --accent-success: #10b981;
+            --accent-danger: #ef4444;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --glass-bg: rgba(22, 27, 44, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', 'Montserrat', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(168, 85, 247, 0.15) 0%, transparent 40%);
+        }
+
+        header {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.25rem;
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.25rem;
+            background: linear-gradient(to right, #ffffff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .user-profile-widget {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            border: 1px solid var(--border-color);
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .user-info-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .user-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .user-group {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+        }
+
+        .main-container {
+            flex: 1;
+            display: flex;
+            padding: 2rem;
+            gap: 2rem;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 260px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            height: fit-content;
+            box-shadow: var(--card-shadow);
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--text-primary);
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(168, 85, 247, 0.15));
+            border-color: rgba(99, 102, 241, 0.3);
+            font-weight: 600;
+        }
+
+        /* Content Area */
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+        }
+
+        .card-header {
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #ffffff, #e2e8f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            border-color: var(--accent-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-danger {
+            background: var(--accent-danger);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            opacity: 0.9;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 1rem;
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .custom-table th, .custom-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .custom-table th {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .custom-table tr:hover td {
+            background: rgba(255, 255, 255, 0.01);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--accent-success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-info {
+            background: rgba(99, 102, 241, 0.15);
+            color: var(--accent-primary);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .badge-warning {
+            background: rgba(245, 158, 11, 0.15);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+
+        /* GPA widget */
+        .gpa-container {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            margin-bottom: 1.5rem;
+        }
+
+        .gpa-value {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gpa-label {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .gpa-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .gpa-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        /* Crash Screen (Bug 3) */
+        .crash-screen {
+            background: #000;
+            color: #ff3333;
+            font-family: 'Courier New', monospace;
+            padding: 3rem;
+            border-radius: 12px;
+            border: 3px solid #ff3333;
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.3);
+            max-width: 800px;
+            margin: 2rem auto;
+        }
+
+        .crash-title {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            border-bottom: 2px solid #ff3333;
+            padding-bottom: 0.5rem;
+        }
+
+        .crash-stack {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            margin-bottom: 2rem;
+        }
+
+        /* Alert component */
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--accent-success);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .alert-danger {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--accent-danger);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        /* Course List Card */
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: all 0.3s;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(99, 102, 241, 0.3);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .course-header {
+            margin-bottom: 1rem;
+        }
+
+        .course-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .course-teacher {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .course-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1.5rem;
+        }
+
+        /* Dev Mode Panel (for triggering bugs easily) */
+        .dev-panel {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            background: rgba(15, 23, 42, 0.95);
+            border: 2px solid var(--accent-primary);
+            border-radius: 12px;
+            padding: 1rem;
+            z-index: 1000;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.8);
+            max-width: 300px;
+        }
+
+        .dev-panel-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--accent-primary);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .dev-btn {
+            display: block;
+            width: 100%;
+            padding: 0.4rem 0.8rem;
+            font-size: 0.75rem;
+            background: #1e293b;
+            color: #f1f5f9;
+            border: 1px solid #334155;
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .dev-btn:hover {
+            background: #334155;
+            border-color: var(--accent-primary);
+        }
+
+        .dev-btn.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            border-color: transparent;
+            font-weight: 600;
+        }
+
+        /* Center login/reg cards */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+            width: 100%;
+        }
+
+        .auth-card {
+            width: 100%;
+            max-width: 450px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <div class="logo-icon">SP</div>
+            <div class="logo-text">STUDENT PORTAL</div>
+        </div>
+        <div class="user-profile-widget" id="userWidget">
+            <div class="user-avatar" id="avatarLetter">К</div>
+            <div class="user-info-text">
+                <span class="user-name" id="widgetName">Канат Б.А.</span>
+                <span class="user-group" id="widgetGroup">Группа П-24-67б</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container" id="mainContainer">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar" id="sidebarMenu">
+            <div class="nav-item" data-target="dashboard" onclick="switchView('dashboard')">🏠 Панель управления</div>
+            <div class="nav-item" data-target="courses" onclick="switchView('courses')">📚 Учебные курсы</div>
+            <div class="nav-item" data-target="grades" onclick="switchView('grades')">📊 Электронный журнал</div>
+            <div class="nav-item" data-target="reports" onclick="switchView('reports')">📄 Отчётность</div>
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 0.5rem 0;">
+            <div class="nav-item" onclick="logout()">🚪 Выйти из системы</div>
+        </nav>
+
+        <!-- Content Area -->
+        <main class="content-area" id="contentArea">
+            
+            <!-- VIEW: Login -->
+            <div id="view-login" class="view auth-container" style="display: none;">
+                <div class="card auth-card">
+                    <div class="card-header" style="justify-content: center;">
+                        <h2 class="card-title">Вход в систему</h2>
+                    </div>
+                    <div id="loginAlert"></div>
+                    <form onsubmit="handleLogin(event)">
+                        <div class="form-group">
+                            <label class="form-label">Имя пользователя (Логин)</label>
+                            <input type="text" id="loginUsername" class="form-input" placeholder="Введите логин..." required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Пароль</label>
+                            <input type="password" id="loginPassword" class="form-input" placeholder="Введите пароль..." required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Роль в системе</label>
+                            <select id="loginRole" class="form-input" style="appearance: none;">
+                                <option value="student">Студент</option>
+                                <option value="teacher">Преподаватель</option>
+                                <option value="admin">Администратор</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Войти</button>
+                    </form>
+                    <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+                        <span style="color: var(--text-secondary)">Нет учетной записи?</span> 
+                        <a href="javascript:void(0)" onclick="switchView('register')" style="color: var(--accent-primary); text-decoration: none; font-weight: 500;">Зарегистрироваться</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: Register -->
+            <div id="view-register" class="view auth-container" style="display: none;">
+                <div class="card auth-card">
+                    <div class="card-header" style="justify-content: center;">
+                        <h2 class="card-title">Регистрация нового пользователя</h2>
+                    </div>
+                    <div id="registerAlert"></div>
+                    <form onsubmit="handleRegister(event)">
+                        <div class="form-group">
+                            <label class="form-label">ФИО полностью</label>
+                            <input type="text" id="regFullName" class="form-input" placeholder="Например: Канат Батырхан Азаматулы">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Группа</label>
+                            <input type="text" id="regGroup" class="form-input" placeholder="Например: П-24-67б">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Электронная почта</label>
+                            <input type="text" id="regEmail" class="form-input" placeholder="example@astana.edu.kz">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Имя пользователя (Логин)</label>
+                            <input type="text" id="regUsername" class="form-input" placeholder="Введите логин...">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Пароль</label>
+                            <input type="password" id="regPassword" class="form-input" placeholder="Придумайте пароль...">
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 0.5rem;">Создать аккаунт</button>
+                    </form>
+                    <div style="text-align: center; margin-top: 1.5rem; font-size: 0.9rem;">
+                        <span style="color: var(--text-secondary)">Уже зарегистрированы?</span> 
+                        <a href="javascript:void(0)" onclick="switchView('login')" style="color: var(--accent-primary); text-decoration: none; font-weight: 500;">Войти в систему</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: Dashboard -->
+            <div id="view-dashboard" class="view" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Панель управления</h2>
+                        <span class="badge badge-info" id="dashboardRoleBadge">Роль: Студент</span>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 2rem;">
+                        <div>
+                            <h3 style="font-size: 1.25rem; font-weight: 600; margin-bottom: 1rem;">Добро пожаловать в Student Portal!</h3>
+                            <p style="color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem;">
+                                Это единая образовательная среда, объединяющая регистрационные данные, успеваемость по дисциплинам, возможность записи на элективные курсы и генерацию академических отчетов в реальном времени.
+                            </p>
+                            
+                            <h4 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">Данные студента:</h4>
+                            <table style="width: 100%; font-size: 0.95rem; margin-bottom: 1.5rem; border-collapse: collapse;">
+                                <tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: 0.5rem 0; color: var(--text-secondary);">ФИО:</td><td style="padding: 0.5rem 0; font-weight: 500;" id="profileFullName">Канат Батырхан Азаматулы</td></tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: 0.5rem 0; color: var(--text-secondary);">Группа:</td><td style="padding: 0.5rem 0; font-weight: 500;" id="profileGroup">П-24-67б</td></tr>
+                                <tr style="border-bottom: 1px solid var(--border-color);"><td style="padding: 0.5rem 0; color: var(--text-secondary);">Почта:</td><td style="padding: 0.5rem 0; font-weight: 500;" id="profileEmail">kanat.b@astana.edu.kz</td></tr>
+                                <tr><td style="padding: 0.5rem 0; color: var(--text-secondary);">Статус обучения:</td><td style="padding: 0.5rem 0; font-weight: 500; color: var(--accent-success);">Активный</td></tr>
+                            </table>
+                        </div>
+                        
+                        <div>
+                            <div class="gpa-container" style="flex-direction: column; align-items: flex-start; text-align: left;">
+                                <div class="gpa-value" id="dashboardGpa">4.8</div>
+                                <div class="gpa-label">
+                                    <span class="gpa-title">Текущий GPA</span>
+                                    <span class="gpa-desc">на основе оценок журнала</span>
+                                </div>
+                            </div>
+                            
+                            <div class="card" style="padding: 1.25rem; background: rgba(255,255,255,0.01);">
+                                <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.75rem;">Записано курсов</h4>
+                                <div style="font-size: 1.75rem; font-weight: 700; color: var(--accent-secondary);" id="dashboardCoursesCount">4 / 5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: Courses -->
+            <div id="view-courses" class="view" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Доступные учебные курсы</h2>
+                        <span style="font-size: 0.9rem; color: var(--text-secondary)">Семестр 4, 2026г.</span>
+                    </div>
+                    <div id="coursesAlert"></div>
+                    <div class="course-grid" id="coursesGrid">
+                        <!-- Dynamic Course Cards -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: Grades -->
+            <div id="view-grades" class="view" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Электронный журнал успеваемости</h2>
+                    </div>
+                    
+                    <div class="gpa-container" id="gpaWidget">
+                        <div class="gpa-value" id="gpaVal">4.8</div>
+                        <div class="gpa-label">
+                            <span class="gpa-title">Средний балл (GPA) по дисциплинам</span>
+                            <span class="gpa-desc" id="gpaFormula">Формула: Сумма баллов / Количество дисциплин</span>
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table class="custom-table">
+                            <thead>
+                                <tr>
+                                    <th>Дисциплина</th>
+                                    <th>Преподаватель</th>
+                                    <th>Текущие оценки</th>
+                                    <th>Итог (Балл)</th>
+                                    <th>Буквенная оценка</th>
+                                    <th>Статус</th>
+                                </tr>
+                            </thead>
+                            <tbody id="gradesTableBody">
+                                <!-- Dynamic Grades -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: Reports -->
+            <div id="view-reports" class="view" style="display: none;">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Формирование отчетности и рейтингов</h2>
+                    </div>
+                    <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+                        Здесь вы можете сформировать официальные выписки успеваемости, рассчитать рейтинг студента по группе и выгрузить академическую справку.
+                    </p>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <div class="card" style="padding: 1.5rem; background: rgba(255,255,255,0.01);">
+                            <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.75rem;">Академический рейтинг студента</h3>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.25rem;">
+                                Рассчитывается среди студентов группы П-24-67б на основе текущих оценок и успеваемости.
+                            </p>
+                            <div style="background: rgba(99, 102, 241, 0.05); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; border: 1px dashed rgba(99, 102, 241, 0.2);">
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                                    <span style="color: var(--text-secondary);">Место в группе:</span>
+                                    <span style="font-weight: 600; color: var(--accent-primary);" id="ratingPlace">1 из 25</span>
+                                </div>
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span style="color: var(--text-secondary);">Средневзвешенный балл:</span>
+                                    <span style="font-weight: 600;" id="ratingGpa">4.8</span>
+                                </div>
+                            </div>
+                            <button class="btn btn-secondary" onclick="generateReport('rating')">Показать сводный рейтинг</button>
+                        </div>
+
+                        <div class="card" style="padding: 1.5rem; background: rgba(255,255,255,0.01);">
+                            <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.75rem;">Академическая справка (Транскрипт)</h3>
+                            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 1.25rem;">
+                                Справка содержит список пройденных дисциплин, количество кредитов ECTS и итоговые буквенные оценки.
+                            </p>
+                            <button class="btn btn-primary" onclick="generateReport('transcript')">Сформировать справку</button>
+                        </div>
+                    </div>
+
+                    <!-- Report Output Area -->
+                    <div id="reportOutputCard" class="card" style="margin-top: 1.5rem; display: none; background: rgba(255, 255, 255, 0.02); border-color: rgba(99, 102, 241, 0.2);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                            <h4 id="reportTitle" style="font-weight: 600; font-size: 1.1rem;">Сформированный отчет</h4>
+                            <span class="badge badge-success">Экспортировано</span>
+                        </div>
+                        <div id="reportContent" style="font-size: 0.9rem; line-height: 1.6; color: var(--text-secondary); border-top: 1px solid var(--border-color); padding-top: 1rem;">
+                            <!-- Dynamic Content -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW: UI CRASH (Bug 3 State) -->
+            <div id="view-crash" class="view" style="display: none;">
+                <div class="crash-screen">
+                    <div class="crash-title">Runtime System Error - Crash Stack Trace</div>
+                    <div class="crash-stack" id="crashStackTrace">
+TypeError: Cannot read properties of undefined (reading 'length')
+    at generateTranscriptReport (index.html:432:31)
+    at generateReport (index.html:451:9)
+    at HTMLButtonElement.onclick (index.html:252:84)
+--------------------------------------------------
+System integration error: Module "Reporting" (Module 4) requested enrollment data from Module "Courses" (Module 2) for unregistered user. 
+Returned value was null. Exception unhandled in visual renderer layer.
+                    </div>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-danger" onclick="resetApp()">Перезапустить приложение</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Dev Mode Controls (floating at the bottom right) -->
+    <div class="dev-panel" id="devPanel">
+        <div class="dev-panel-title">
+            <span>Панель тестирования (Dev)</span>
+            <span style="font-size: 0.65rem; background: rgba(255,255,255,0.1); padding: 0.15rem 0.4rem; border-radius: 4px;">Bug Panel</span>
+        </div>
+        <button class="dev-btn active" id="btn-normal" onclick="setDevMode('normal')">🟢 Режим без ошибок (Normal)</button>
+        <button class="dev-btn" id="btn-bug1" onclick="setDevMode('bug_gpa')">🔴 Ошибка 1: Баг расчета GPA (Модуль 3)</button>
+        <button class="dev-btn" id="btn-bug2" onclick="setDevMode('bug_register_empty')">🔴 Ошибка 2: Баг пустой регистрации (Модуль 1)</button>
+        <button class="dev-btn" id="btn-bug3" onclick="setDevMode('bug_report_crash')">🔴 Ошибка 3: Баг падения UI при отчете (Модуль 4)</button>
+    </div>
+
+    <script>
+        // Core state
+        let currentUser = {
+            fullName: "Канат Батырхан Азаматулы",
+            group: "П-24-67б",
+            email: "kanat.b@astana.edu.kz",
+            role: "student",
+            isLoggedIn: true
+        };
+
+        // Course List
+        let courses = [
+            { id: "C-01", name: "Тестирование ПО", teacher: "преп. Салаватов Р.Б.", enrolled: true, grade: 5 },
+            { id: "C-02", name: "Архитектура ИС", teacher: "преп. Салаватов Р.Б.", enrolled: true, grade: 5 },
+            { id: "C-03", name: "Управление ИТ-проектами", teacher: "преп. Салаватов Р.Б.", enrolled: true, grade: 4 },
+            { id: "C-04", name: "Базы данных", teacher: "преп. Салаватов Р.Б.", enrolled: true, grade: 5 },
+            { id: "C-05", name: "Web-программирование", teacher: "преп. Салаватов Р.Б.", enrolled: false, grade: null }
+        ];
+
+        // Testing States / Modes
+        let devMode = 'normal'; // 'normal', 'bug_gpa', 'bug_register_empty', 'bug_report_crash'
+
+        // Initialize App
+        function initApp() {
+            // Read query param state if exists
+            const urlParams = new URLSearchParams(window.location.search);
+            const stateParam = urlParams.get('state');
+            
+            if (stateParam) {
+                // Determine mode based on state param
+                if (stateParam.includes('bug_gpa')) {
+                    devMode = 'bug_gpa';
+                } else if (stateParam.includes('bug_register_empty')) {
+                    devMode = 'bug_register_empty';
+                } else if (stateParam.includes('bug_report_crash')) {
+                    devMode = 'bug_report_crash';
+                } else {
+                    devMode = 'normal';
+                }
+                updateDevButtons();
+
+                // View switching
+                if (stateParam.startsWith('login')) {
+                    currentUser.isLoggedIn = false;
+                    switchView('login');
+                } else if (stateParam.startsWith('register')) {
+                    currentUser.isLoggedIn = false;
+                    switchView('register');
+                    if (devMode === 'bug_register_empty') {
+                        // Prefill empty inputs for screenshot
+                        document.getElementById('regFullName').value = "";
+                        document.getElementById('regUsername').value = "";
+                        document.getElementById('regPassword').value = "";
+                        // Trigger simulated registration directly
+                        showRegisterAlert("Регистрация успешна! (Пароль пуст, проверка валидации обойдена)", "success");
+                    }
+                } else if (stateParam.startsWith('courses')) {
+                    switchView('courses');
+                    if (stateParam.includes('enroll')) {
+                        // simulate enrollment change
+                        courses[4].enrolled = true;
+                        showCoursesAlert("Успешная запись на курс: Web-программирование!", "success");
+                    }
+                } else if (stateParam.startsWith('grades')) {
+                    switchView('grades');
+                } else if (stateParam.startsWith('reports')) {
+                    switchView('reports');
+                    if (stateParam.includes('transcript')) {
+                        if (devMode === 'bug_report_crash') {
+                            switchView('crash');
+                        } else {
+                            generateReport('transcript');
+                        }
+                    } else if (stateParam.includes('rating')) {
+                        generateReport('rating');
+                    }
+                } else {
+                    switchView('dashboard');
+                }
+            } else {
+                switchView('dashboard');
+            }
+            
+            renderCourses();
+            renderGrades();
+            updateDashboard();
+        }
+
+        // View Controller
+        function switchView(viewName) {
+            // Hide all views
+            document.querySelectorAll('.view').forEach(view => {
+                view.style.display = 'none';
+            });
+
+            // Adjust navigation sidebar and header widget visibility
+            const sidebar = document.getElementById('sidebarMenu');
+            const widget = document.getElementById('userWidget');
+
+            if (viewName === 'login' || viewName === 'register') {
+                sidebar.style.display = 'none';
+                widget.style.display = 'none';
+                currentUser.isLoggedIn = false;
+            } else if (viewName === 'crash') {
+                sidebar.style.display = 'none';
+                widget.style.display = 'flex';
+            } else {
+                sidebar.style.display = 'flex';
+                widget.style.display = 'flex';
+                currentUser.isLoggedIn = true;
+            }
+
+            // Show active view
+            const viewElement = document.getElementById(`view-${viewName}`);
+            if (viewElement) {
+                viewElement.style.display = 'block';
+            }
+
+            // Update active menu class
+            document.querySelectorAll('.nav-item').forEach(item => {
+                if (item.getAttribute('data-target') === viewName) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // Handle Dev Modes
+        function setDevMode(mode) {
+            devMode = mode;
+            updateDevButtons();
+            
+            // Re-render
+            renderGrades();
+            updateDashboard();
+            
+            // If report crash is selected and we are on reports, switch to crash or reset report
+            if (mode === 'bug_report_crash' && document.getElementById('view-reports').style.display === 'block') {
+                // If they click generate transcript now
+            } else {
+                if (document.getElementById('view-crash').style.display === 'block') {
+                    switchView('reports');
+                }
+            }
+        }
+
+        function updateDevButtons() {
+            document.querySelectorAll('.dev-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (devMode === 'normal') document.getElementById('btn-normal').classList.add('active');
+            if (devMode === 'bug_gpa') document.getElementById('btn-bug-gpa') ? document.getElementById('btn-bug-gpa').classList.add('active') : document.getElementById('btn-bug1').classList.add('active');
+            if (devMode === 'bug_register_empty') document.getElementById('btn-bug2').classList.add('active');
+            if (devMode === 'bug_report_crash') document.getElementById('btn-bug3').classList.add('active');
+        }
+
+        // Render functions
+        function renderCourses() {
+            const grid = document.getElementById('coursesGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            courses.forEach(course => {
+                const isEnrolled = course.enrolled;
+                const card = document.createElement('div');
+                card.className = 'course-card';
+                card.innerHTML = `
+                    <div class="course-header">
+                        <div class="course-name">${course.name}</div>
+                        <div class="course-teacher">${course.teacher}</div>
+                    </div>
+                    <div class="course-footer">
+                        <span class="badge ${isEnrolled ? 'badge-success' : 'badge-info'}">
+                            ${isEnrolled ? 'Записан' : 'Доступен'}
+                        </span>
+                        ${isEnrolled 
+                            ? `<button class="btn btn-secondary btn-danger" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="toggleEnroll('${course.id}')">Отписаться</button>`
+                            : `<button class="btn btn-primary" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="toggleEnroll('${course.id}')">Записаться</button>`
+                        }
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function calculateGPA() {
+            const gradedCourses = courses.filter(c => c.enrolled && c.grade !== null);
+            if (gradedCourses.length === 0) return 0;
+
+            if (devMode === 'bug_gpa') {
+                // BUG: String concatenation instead of math addition!
+                // grades are e.g. 5, 5, 4, 5. Doing sum += grade when they are strings
+                let sum = "";
+                gradedCourses.forEach(c => {
+                    sum += c.grade.toString(); // "5545"
+                });
+                // Convert to number and divide by count
+                const result = parseFloat(sum) / gradedCourses.length; // 5545 / 4 = 1386.25
+                return result.toFixed(1); // 1386.3
+            } else {
+                let sum = 0;
+                gradedCourses.forEach(c => {
+                    sum += c.grade;
+                });
+                return (sum / gradedCourses.length).toFixed(1);
+            }
+        }
+
+        function renderGrades() {
+            const tbody = document.getElementById('gradesTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            courses.forEach(course => {
+                if (!course.enrolled) return;
+                
+                let letterGrade = 'A';
+                if (course.grade === 5) letterGrade = 'A (Отлично)';
+                else if (course.grade === 4) letterGrade = 'B (Хорошо)';
+                else if (course.grade === 3) letterGrade = 'C (Удовл.)';
+                else letterGrade = 'F (Неуд)';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td style="font-weight: 500;">${course.name}</td>
+                    <td>${course.teacher}</td>
+                    <td><span style="font-weight: 600;">${course.grade !== null ? course.grade : '—'}</span></td>
+                    <td>${course.grade !== null ? (course.grade * 20) : '—'} / 100</td>
+                    <td><span class="badge ${course.grade >= 4 ? 'badge-success' : 'badge-warning'}">${letterGrade}</span></td>
+                    <td><span class="badge badge-success">Аттестован</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Update GPA widget
+            const gpa = calculateGPA();
+            document.getElementById('gpaVal').textContent = gpa;
+            document.getElementById('dashboardGpa').textContent = gpa;
+
+            const formulaText = document.getElementById('gpaFormula');
+            if (devMode === 'bug_gpa') {
+                formulaText.innerHTML = `🔴 <span style="color: var(--accent-danger); font-weight: 600;">Ошибка расчета (Баг JS):</span> Слияние строк перед делением: "5" + "5" + "4" + "5" = "5545" / 4 = 1386.3`;
+                document.getElementById('gpaWidget').style.border = "1px solid var(--accent-danger)";
+                document.getElementById('gpaWidget').style.background = "linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(168, 85, 247, 0.05))";
+            } else {
+                formulaText.innerHTML = `Формула: (5 + 5 + 4 + 5) / 4 = 4.8. Успеваемость соответствует техническим требованиям.`;
+                document.getElementById('gpaWidget').style.border = "1px solid rgba(99, 102, 241, 0.2)";
+                document.getElementById('gpaWidget').style.background = "linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1))";
+            }
+        }
+
+        function updateDashboard() {
+            document.getElementById('widgetName').textContent = currentUser.fullName;
+            document.getElementById('profileFullName').textContent = currentUser.fullName;
+            document.getElementById('profileGroup').textContent = "Группа " + currentUser.group;
+            document.getElementById('profileEmail').textContent = currentUser.email;
+
+            const enrolledCount = courses.filter(c => c.enrolled).length;
+            document.getElementById('dashboardCoursesCount').textContent = `${enrolledCount} из ${courses.length}`;
+            document.getElementById('ratingGpa').textContent = calculateGPA();
+        }
+
+        // Event Handlers
+        function toggleEnroll(courseId) {
+            const course = courses.find(c => c.id === courseId);
+            if (course) {
+                course.enrolled = !course.enrolled;
+                if (course.enrolled) {
+                    course.grade = 5; // assign grade
+                    showCoursesAlert(`Вы успешно записались на курс: "${course.name}"`, "success");
+                } else {
+                    course.grade = null;
+                    showCoursesAlert(`Вы отписались от курса: "${course.name}"`, "danger");
+                }
+                renderCourses();
+                renderGrades();
+                updateDashboard();
+            }
+        }
+
+        function showCoursesAlert(msg, type) {
+            const alertDiv = document.getElementById('coursesAlert');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = msg;
+            alertDiv.style.display = 'flex';
+            setTimeout(() => {
+                alertDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function showRegisterAlert(msg, type) {
+            const alertDiv = document.getElementById('registerAlert');
+            if (!alertDiv) return;
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.innerHTML = msg;
+            alertDiv.style.display = 'flex';
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            currentUser.fullName = "Канат Батырхан Азаматулы";
+            currentUser.isLoggedIn = true;
+            currentUser.role = document.getElementById('loginRole').value;
+            
+            // Adjust role badge
+            document.getElementById('dashboardRoleBadge').textContent = `Роль: ${currentUser.role === 'student' ? 'Студент' : currentUser.role === 'teacher' ? 'Преподаватель' : 'Администратор'}`;
+            
+            updateDashboard();
+            switchView('dashboard');
+        }
+
+        function handleRegister(event) {
+            event.preventDefault();
+            const fullName = document.getElementById('regFullName').value;
+            const group = document.getElementById('regGroup').value;
+            const email = document.getElementById('regEmail').value;
+            const username = document.getElementById('regUsername').value;
+            const password = document.getElementById('regPassword').value;
+
+            if (devMode === 'bug_register_empty') {
+                // Bug 2: bypasses validations
+                currentUser.fullName = fullName || "Пустой Пользователь";
+                currentUser.group = group || "БЕЗ ГРУППЫ";
+                currentUser.email = email || "no-email@portal.kz";
+                currentUser.isLoggedIn = true;
+                showRegisterAlert("🎉 Регистрация успешна! (Валидация пропущена)", "success");
+                setTimeout(() => {
+                    updateDashboard();
+                    switchView('dashboard');
+                }, 1500);
+            } else {
+                // Regular mode: validations
+                if (!fullName || !group || !email || !username || !password) {
+                    showRegisterAlert("❌ Ошибка: Все поля формы обязательны для заполнения!", "danger");
+                    return;
+                }
+                currentUser.fullName = fullName;
+                currentUser.group = group;
+                currentUser.email = email;
+                showRegisterAlert("🎉 Регистрация успешно завершена! Выполняется перенаправление...", "success");
+                setTimeout(() => {
+                    updateDashboard();
+                    switchView('dashboard');
+                }, 1500);
+            }
+        }
+
+        function logout() {
+            currentUser.isLoggedIn = false;
+            switchView('login');
+        }
+
+        function generateReport(type) {
+            if (devMode === 'bug_report_crash') {
+                // Bug 3: Crash UI
+                switchView('crash');
+                return;
+            }
+
+            const outputCard = document.getElementById('reportOutputCard');
+            const title = document.getElementById('reportTitle');
+            const content = document.getElementById('reportContent');
+            outputCard.style.display = 'block';
+
+            if (type === 'transcript') {
+                title.textContent = 'Академическая справка (Официальный транскрипт)';
+                let coursesListHtml = courses.filter(c => c.enrolled).map(c => `
+                    <div style="display: flex; justify-content: space-between; padding: 0.25rem 0; border-bottom: 1px dashed rgba(255,255,255,0.05);">
+                        <span>${c.name} (кредитов ECTS: 5)</span>
+                        <span style="font-weight: 600; color: var(--accent-success);">${c.grade === 5 ? 'A (Отлично)' : c.grade === 4 ? 'B (Хорошо)' : 'C (Удовл.)'}</span>
+                    </div>
+                `).join('');
+                
+                content.innerHTML = `
+                    <div style="font-family: monospace; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                        <h4 style="text-align: center; margin-bottom: 1rem; color: #fff;">ВЫПИСКА ИЗ ЭЛЕКТРОННОЙ ВЕДОМОСТИ</h4>
+                        <p><strong>Студент:</strong> ${currentUser.fullName}</p>
+                        <p><strong>Группа:</strong> ${currentUser.group}</p>
+                        <p><strong>Учебное заведение:</strong> Высший колледж "Astana Polytechnic"</p>
+                        <div style="margin: 1rem 0;">
+                            ${coursesListHtml}
+                        </div>
+                        <p style="text-align: right; margin-top: 1rem; font-size: 1.1rem;"><strong>Итоговый GPA: ${calculateGPA()}</strong></p>
+                    </div>
+                `;
+            } else if (type === 'rating') {
+                title.textContent = 'Сводный рейтинг академической успеваемости';
+                content.innerHTML = `
+                    <div style="font-family: monospace; padding: 1rem; background: rgba(0,0,0,0.2); border-radius: 8px;">
+                        <h4 style="text-align: center; margin-bottom: 1rem; color: #fff;">РЕЙТИНГ ГРУППЫ ${currentUser.group}</h4>
+                        <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                            <thead>
+                                <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                                    <th style="padding: 0.5rem 0;">Место</th>
+                                    <th>Студент</th>
+                                    <th style="text-align: right;">GPA</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="color: #fff; background: rgba(99, 102, 241, 0.1);">
+                                    <td style="padding: 0.5rem 0;">1</td>
+                                    <td><strong>${currentUser.fullName} (Вы)</strong></td>
+                                    <td style="text-align: right;"><strong>${calculateGPA()}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.5rem 0;">2</td>
+                                    <td>Галым Жандос</td>
+                                    <td style="text-align: right;">4.7</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.5rem 0;">3</td>
+                                    <td>Каиржанов Адиль</td>
+                                    <td style="text-align: right;">4.6</td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 0.5rem 0;">4</td>
+                                    <td>Асватов Ильяр</td>
+                                    <td style="text-align: right;">4.5</td>
+                                </tr>
+                                <tr style="color: var(--text-secondary);">
+                                    <td style="padding: 0.5rem 0;">...</td>
+                                    <td>Остальные 21 студентов</td>
+                                    <td style="text-align: right;">3.2 - 4.2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            }
+        }
+
+        function resetApp() {
+            devMode = 'normal';
+            updateDevButtons();
+            courses.forEach(c => {
+                if (c.id !== "C-05") {
+                    c.enrolled = true;
+                    c.grade = c.id === "C-03" ? 4 : 5;
+                } else {
+                    c.enrolled = false;
+                    c.grade = null;
+                }
+            });
+            switchView('dashboard');
+            renderCourses();
+            renderGrades();
+            updateDashboard();
+        }
+
+        // Start
+        window.onload = initApp;
+    </script>
+</body>
+</html>
